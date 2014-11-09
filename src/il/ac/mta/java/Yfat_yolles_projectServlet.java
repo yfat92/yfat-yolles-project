@@ -16,7 +16,7 @@ public class Yfat_yolles_projectServlet extends HttpServlet {
 		int res;
 		num1 = 3;
 		num2 = 4;
-		num3 = 7;
+		num3 = 8;
 		res =  num3*(num1+num2);		
 		String resultStr = new String("<h1>Result of " +num3+ "* (" +num2+ "+" +num1+ " ) ="  +res+"</h1>");	
 		
