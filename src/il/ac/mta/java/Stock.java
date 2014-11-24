@@ -33,7 +33,7 @@ public class Stock {
    }
       
 	public String getHtmlDescription(){
-		   return "Symbol: " + getSymbol() + ", ask: " + getAsk() + ", bid: " + getBid() + " , date:  " + getDate();
+		   return "<br>Symbol: " + getSymbol() + ", ask: " + getAsk() + ", bid: " + getBid() + " , date:  " + getDate();
 	 }
 
 
