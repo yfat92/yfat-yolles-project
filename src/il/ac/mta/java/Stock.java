@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.omg.CORBA.PRIVATE_MEMBER;
 
-public class Stock  extends HttpServlet {
+public class Stock extends HttpServlet {
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			throws IOException {
@@ -57,6 +57,7 @@ public class Stock  extends HttpServlet {
 	       }
 	       public String getHtmlDescription(){
 	    	   return "Symbol: " + symbol + ", ask: " + ask + ", bid: " + bid + " , date:  " + date;
-	       }     
+	       } 
+	     	
 	       
 	}
