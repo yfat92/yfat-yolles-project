@@ -1,4 +1,4 @@
-package il.ac.mta.java;
+package il.ac.mta.java.servlet;
 
 import java.io.IOException;
 

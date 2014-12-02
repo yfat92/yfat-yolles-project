@@ -1,4 +1,4 @@
-package il.ac.mta.java;
+package il.ac.mta.java.servlet;
 
 import il.ac.mta.java.model.Stock;
 
@@ -30,14 +30,14 @@ public class StockDetailsServlet  extends HttpServlet {
 				pih.setSymbol("PIH");
 				pih.setDate(myDate);		
 				
-				//resp.getWriter().println(pih.getHtmlDescription());
+				resp.getWriter().println(pih.getHtmlDescription());
 				Stock all = new Stock();
 								
 				all.setAsk((float) 5.5);
 				all.setBid((float) 5.78);
 				all.setSymbol("AAL");
 				all.setDate(myDate);		
-				//resp.getWriter().println(all.getHtmlDescription());
+				resp.getWriter().println(all.getHtmlDescription());
 				
 				Stock caas = new Stock();
 							
@@ -46,7 +46,7 @@ public class StockDetailsServlet  extends HttpServlet {
 				caas.setSymbol("CAAS");
 				caas.setDate(myDate);		
 				
-				//resp.getWriter().println(caas.getHtmlDescription());
+				resp.getWriter().println(caas.getHtmlDescription());
 
 	}
 	      

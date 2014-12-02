@@ -31,9 +31,10 @@ public class Stock {
 	public java.util.Date getDate(){
 		return date;
 	}
+	
+	public String getHtmlDescription(){
 
-	public String getHtmlString(){
-		return "<h1> portfolio :"  + getSymbol() + "</h1>,  ask: " + getAsk() + ", bid: " + getBid() + " , date:  " + getDate();
+		return "<br><b>Symbol: </b>" + getSymbol() + ", <b>ask: </b>" + getAsk() + "<b>, bid: </b>" + getBid() + "<b> , date:  </b>" + getDate();
 	}
 }
 

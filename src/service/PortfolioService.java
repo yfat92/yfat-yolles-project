@@ -1,4 +1,4 @@
-package il.ac.mta.java.stockService.service;
+package service;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -43,8 +43,6 @@ public class PortfolioService {
 		myPortfilo.addStock(caas);
 		return myPortfilo;
 	}
-
-
 
 }
 
