@@ -8,13 +8,8 @@ import il.ac.mta.java.model.Stock;
 
 public class PortfolioService {
 
-	private Portfolio myPortfilo;
-
-	public PortfolioService(){
-		myPortfilo = new Portfolio();
-	}
-
 	public Portfolio getPortfolio(){
+		Portfolio myPortfilo = new Portfolio();
 		Calendar c = Calendar.getInstance();
 		c.set(2015, 11, 15);
 		Date myDate = c.getTime();

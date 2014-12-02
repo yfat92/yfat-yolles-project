@@ -11,7 +11,6 @@ import il.ac.mta.java.model.Portfolio;
 import il.ac.mta.java.model.Stock;
 
 
-
 public class PortfolioServlet  extends HttpServlet {
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) 
