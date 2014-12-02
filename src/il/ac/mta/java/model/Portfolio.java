@@ -2,8 +2,6 @@ package il.ac.mta.java.model;
 
 import java.util.Date;
 
-import il.ac.mta.java.Stock;
-
 public class Portfolio {
 
 	private String title;
@@ -24,10 +22,8 @@ public class Portfolio {
 		return stocks;
 	}
 	
-	public String getHtmlString(){
-		   return "<h1> portfolio :"  + getSymbol() + "</h1>,  ask: " + getAsk() + ", bid: " + getBid() + " , date:  " + getDate();
-	 }
 	
+
 	public class StockStatus {
 		
 		private String symbol;
