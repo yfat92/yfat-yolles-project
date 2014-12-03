@@ -5,7 +5,15 @@ import java.util.Date;
 
 import il.ac.mta.java.model.Portfolio;
 import il.ac.mta.java.model.Stock;
-
+/**
+ *instance Portfolio
+ *initialize stock data, create stock instance
+ *and add them to the array
+ *return the Portfolio instance  
+ ** @author yfat yolles
+ * @since 3/12/2014
+ * date 3/12/2014
+ */	
 public class PortfolioService {
 
 	public Portfolio getPortfolio(){
