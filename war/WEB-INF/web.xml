@@ -7,26 +7,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 
 
 	<servlet>
-		<servlet-name>Yfat_yolles_project</servlet-name>
-		<servlet-class>il.ac.mta.java.servlet.Yfat_yolles_projectServlet</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>Yfat_yolles_project</servlet-name>
-		<url-pattern>/yfat_yolles_project</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>StockDetailsServlet</servlet-name>
-		<servlet-class>il.ac.mta.java.servlet.StockDetailsServlet</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>StockDetailsServlet</servlet-name>
-		<url-pattern>/stockDetails</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
 		<servlet-name>PortfolioServlet</servlet-name>
 		<servlet-class>il.ac.mta.java.servlet.PortfolioServlet</servlet-class>
 	</servlet>

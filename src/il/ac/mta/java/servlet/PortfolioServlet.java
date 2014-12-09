@@ -6,9 +6,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import service.PortfolioService;
+
+
 import il.ac.mta.java.model.Portfolio;
 import il.ac.mta.java.model.Stock;
+import il.ac.mta.java.service.PortfolioService;
 /**
  *this class is print to html landing page
  *and add a new instance of  PortfolioService
