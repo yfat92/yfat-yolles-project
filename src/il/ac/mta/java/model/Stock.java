@@ -6,6 +6,20 @@ public class Stock {
 	private float bid;
 	private String symbol;
 	private java.util.Date date;
+	
+	public Stock(Stock st) {
+		setAsk(st.getAsk());
+		setBid(st.getBid());
+		setSymbol(st.getSymbol());
+		setDate(st.getDate());	
+	}
+	
+	public Stock(float ask, float bid, String symbol, java.util.Date date)	{
+		this.ask = ask;
+		this.bid = bid;
+		this.symbol = symbol;
+		this.date = date;	
+	}
 
 	public void setAsk(float ask){
 		this.ask=ask;

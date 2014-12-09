@@ -3,26 +3,38 @@ package il.ac.mta.java.model;
 import java.util.Date;
 
 /**
-* an arrays of stock and stocksStatus 
-* @author yfat yolles
-* @since 3/12/2014
-* date 3/12/2014
-*/
+ * an arrays of stock and stocksStatus 
+ * @author yfat yolles
+ * @since 3/12/2014
+ * date 3/12/2014
+ */
 public class Portfolio {
 	//members
 	private final static int MAX_PORTFOLIO_SIZE = 5;
 	private String title;
-	int portfolioSize = 0;
-	
+	private int portfolioSize = 0;
+
 	//array
 	Stock[] stocks = new Stock[MAX_PORTFOLIO_SIZE];
 	StockStatus[] stocksStatus = new StockStatus[MAX_PORTFOLIO_SIZE];
+
+	public Portfolio(Portfolio pf){
+		setTitle(pf.getTitle());
+		setPortfolioSize(pf.getPortfolioSize());
+		setStocks(pf.getStocks());
+		setStocksStatus(pf.getStocksStatus());		
+	}
 	
+	public Portfolio(String portfolioTitle, int portfolioSize,int  stockIndex, int stocksStatus ){
+		setTitle(portfolioTitle);
+		setPortfolioSize(portfolioSize);
+		
+	}
 	//getter and setter
 	public Stock[] getStocks() {
 		return stocks;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -30,17 +42,44 @@ public class Portfolio {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
+	public int getPortfolioSize() {
+		return portfolioSize;
+	}
+
+	public void setPortfolioSize(int portfolioSize) {
+		this.portfolioSize = portfolioSize;
+	}
+
+	public StockStatus[] getStocksStatus() {
+		return stocksStatus;
+	}
+
+	public void setStocksStatus(StockStatus[] stocksStatus) {
+		this.stocksStatus = stocksStatus;
+	}
+
+	public static int getMaxPortfolioSize() {
+		return MAX_PORTFOLIO_SIZE;
+	}
+
+	public void setStocks(Stock[] stocks) {
+		this.stocks = stocks;
+	}
+
 	//methods
 	public void addStock(Stock stock) {
 		stocks[portfolioSize] = stock;
 		portfolioSize++;	 
 	}
+	// 
+
+	
 	/**
-	* loop for all the stocks 
-	*
-	* @return string whit stocks data
-	*/
+	 * loop for all the stocks 
+	 *
+	 * @return string whit stocks data
+	 */
 	public String getHtmlString(){
 		String getHtmlString = " <h1>Portfolio : </h1> ";
 
@@ -57,7 +96,7 @@ public class Portfolio {
 	 */	
 	//inner class
 	public class StockStatus {
-		
+
 		private final static int DO_NOTHING = 0;
 		private final static int BUY = 1;
 		private final static int SELL = 2;
@@ -66,7 +105,7 @@ public class Portfolio {
 		private Date date;
 		private int recommendation;
 		private int stockQuantity;
-	
+
 		//getter setter
 		public String getSymbol() {
 			return symbol;
@@ -104,6 +143,6 @@ public class Portfolio {
 		public void setStockQuantity(int stockQuantity) {
 			this.stockQuantity = stockQuantity;
 		}
-		
+
 	}
 }
