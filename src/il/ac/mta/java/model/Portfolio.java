@@ -13,23 +13,37 @@ public class Portfolio {
 	private final static int MAX_PORTFOLIO_SIZE = 5;
 	private String title;
 	private int portfolioSize = 0;
+	int i =0;
 
 	//array
 	Stock[] stocks = new Stock[MAX_PORTFOLIO_SIZE];
 	StockStatus[] stocksStatus = new StockStatus[MAX_PORTFOLIO_SIZE];
 
-	public Portfolio(Portfolio pf){
-		setTitle(pf.getTitle());
-		setPortfolioSize(pf.getPortfolioSize());
-		setStocks(pf.getStocks());
-		setStocksStatus(pf.getStocksStatus());		
-	}
-	
-	public Portfolio(String portfolioTitle, int portfolioSize,int  stockIndex, int stocksStatus ){
+
+	//קונסטרקטור
+	public Portfolio(String portfolioTitle, int portfolioSize, StockStatus stocksStatus[] ,Stock stocks[]){
 		setTitle(portfolioTitle);
 		setPortfolioSize(portfolioSize);
-		
+		for (i =0 ; i < portfolioSize ; i++)
+		{
+			this.stocks[i] = stocks[i]; 
+			this.stocksStatus[i] = stocksStatus[i]; 	
+		}
 	}
+	// קופי
+	public Portfolio(Portfolio portfolio){
+		setTitle(portfolio.getTitle());
+		setPortfolioSize(portfolio.getPortfolioSize());		
+		Stock[] tempStockArray = portfolio.getStocks();
+		StockStatus[] tempStockStatusArray = portfolio.getStocksStatus();
+		
+		for (i =0 ; i < portfolioSize ; i++)
+		{
+			stocks[i] = tempStockArray[i];
+			stocksStatus[i]= tempStockStatusArray[i];						
+		}
+	}
+	
 	//getter and setter
 	public Stock[] getStocks() {
 		return stocks;
