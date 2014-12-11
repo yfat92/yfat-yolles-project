@@ -14,6 +14,7 @@ public class Portfolio {
 	private String title;
 	private int portfolioSize = 0;
 	int i =0;
+	private 
 
 	//array
 	Stock[] stocks = new Stock[MAX_PORTFOLIO_SIZE];
@@ -21,7 +22,8 @@ public class Portfolio {
 
 
 	//קונסטרקטור
-	public Portfolio(String portfolioTitle, int portfolioSize, StockStatus stocksStatus[] ,Stock stocks[]){
+	public Portfolio(String portfolioTitle, int portfolioSize, Stock stocks[],
+			StockStatus stockStatus){
 		setTitle(portfolioTitle);
 		setPortfolioSize(portfolioSize);
 		for (i =0 ; i < portfolioSize ; i++)
@@ -29,6 +31,7 @@ public class Portfolio {
 			this.stocks[i] = stocks[i]; 
 			this.stocksStatus[i] = stocksStatus[i]; 	
 		}
+		this.stockStatus = new StockStatus(stockStatus);
 	}
 	// קופי
 	public Portfolio(Portfolio portfolio){
@@ -36,12 +39,13 @@ public class Portfolio {
 		setPortfolioSize(portfolio.getPortfolioSize());		
 		Stock[] tempStockArray = portfolio.getStocks();
 		StockStatus[] tempStockStatusArray = portfolio.getStocksStatus();
-		
+		//stocksStatus = new StockStatus(portfolio.stocksStatus);
 		for (i =0 ; i < portfolioSize ; i++)
 		{
 			stocks[i] = tempStockArray[i];
 			stocksStatus[i]= tempStockStatusArray[i];						
 		}
+		
 	}
 	
 	//getter and setter
@@ -86,7 +90,11 @@ public class Portfolio {
 		stocks[portfolioSize] = stock;
 		portfolioSize++;	 
 	}
-	// 
+	//remove stock
+	public void removeStock(Stock stock[], int index) {
+		stocks[index] = null;
+			 
+	}
 
 	
 	/**

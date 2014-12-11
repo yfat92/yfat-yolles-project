@@ -25,9 +25,29 @@ public class PortfolioServlet  extends HttpServlet {
 			throws IOException {
 		resp.setContentType("text/html");
 		PortfolioService portfolioService = new PortfolioService();
-		Portfolio portfolio = portfolioService.getPortfolio();
-		Stock[] stocks = portfolio.getStocks();
-
-		resp.getWriter().println(portfolio.getHtmlString());
+		Portfolio portfolio1 = portfolioService.getPortfolio();
+		Stock[] stocks = portfolio1.getStocks();
+		//create a new portfolio and change the title 
+		Portfolio portfolio2 = new Portfolio(portfolio1);
+		portfolio2.setTitle("Portfolio#2");
+		
+		// print portfolio1 
+		resp.getWriter().println(portfolio1.getHtmlString());
+		// print portfolio2
+		resp.getWriter().println(portfolio2.getHtmlString());
+		
+		// remove first stock from portfolio1
+		portfolio1.removeStock(stocks, 0);
+		// print portfolio1 
+		resp.getWriter().println(portfolio1.getHtmlString());
+		// print portfolio2
+		resp.getWriter().println(portfolio2.getHtmlString());
+		
+		//change last stock's bid value
+		portfolio2.getStocks()[2].setBid((float) 55.5);
+		// print portfolio1 
+		resp.getWriter().println(portfolio1.getHtmlString());
+		// print portfolio2
+		resp.getWriter().println(portfolio2.getHtmlString());
 	}
 }

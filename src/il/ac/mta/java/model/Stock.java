@@ -6,14 +6,14 @@ public class Stock {
 	private float bid;
 	private String symbol;
 	private java.util.Date date;
-	
-	public Stock(Stock st) {
-		setAsk(st.getAsk());
-		setBid(st.getBid());
-		setSymbol(st.getSymbol());
-		setDate(st.getDate());	
+	//copy c'tor
+	public Stock(Stock stock) {
+		setAsk(stock.getAsk());
+		setBid(stock.getBid());
+		setSymbol(stock.getSymbol());
+		setDate(stock.getDate());	
 	}
-	
+	//constructor
 	public Stock(float ask, float bid, String symbol, java.util.Date date)	{
 		this.ask = ask;
 		this.bid = bid;
