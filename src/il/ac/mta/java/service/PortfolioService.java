@@ -7,13 +7,13 @@ import il.ac.mta.java.model.Portfolio;
 import il.ac.mta.java.model.Stock;
 import il.ac.mta.java.servlet.PortfolioServlet;;
 /**
- *instance Portfolio
+ *Portfolio's calculations 
  *initialize stock data, create stock instance
  *and add them to the array
  *return the Portfolio instance  
  ** @author yfat yolles
  * @since 3/12/2014
- * date 3/12/2014
+ * date 13/12/2014
  */	
 public class PortfolioService {
 

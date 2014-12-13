@@ -1,5 +1,6 @@
 package il.ac.mta.java.model;
 /**
+ * this class have save stock's information
  * create a copy of Stock   
  * @author yfat yolles
  * @since 3/12/2014
@@ -11,7 +12,7 @@ public class Stock {
 	private float bid;
 	private String symbol;
 	private java.util.Date date;
-	
+
 	//copy constructor
 	public Stock(Stock stock) {
 		setAsk(stock.getAsk());
@@ -51,7 +52,7 @@ public class Stock {
 	public java.util.Date getDate(){
 		return date;
 	}
-	
+
 	public String getHtmlDescription(){
 
 		return "<br><b>Symbol: </b>" + getSymbol() + ", <b>ask: </b>" + getAsk() + "<b>, bid: </b>" + getBid() + "<b> , date:  </b>" + getDate();

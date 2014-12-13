@@ -4,7 +4,8 @@ import java.util.Date;
 
 
 /**
- * create a copy of Portfolio  
+ * the class save portfolio data 
+ *  and also create a copy of Portfolio 
  * @author yfat yolles
  * @since 3/12/2014
  * date 13/12/2014
@@ -114,7 +115,7 @@ public class Portfolio {
 	 *constructor 
 	 ** @author yfat yolles
 	 * @since 3/12/2014
-	 * date 3/12/2014
+	 * date 13/12/2014
 	 */	
 	//inner class
 	public class StockStatus {

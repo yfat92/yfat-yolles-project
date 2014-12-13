@@ -12,7 +12,7 @@ import il.ac.mta.java.model.Portfolio;
 import il.ac.mta.java.model.Stock;
 import il.ac.mta.java.service.PortfolioService;
 /**
- *this class is print to html landing page
+ *this class is print to html landing page 
  *and add a new instance of  PortfolioService
  ** @author yfat yolles
  * @since 3/12/2014
