@@ -18,31 +18,19 @@ import il.ac.mta.java.servlet.PortfolioServlet;;
 public class PortfolioService {
 
 	public Portfolio getPortfolio(){
-		Portfolio myPortfilo = new Portfolio();
+		Portfolio myPortfilo = new Portfolio("Portfilo#1", 0, null, null);
 		Calendar c = Calendar.getInstance();
 		c.set(2015, 11, 15);
 		Date myDate = c.getTime();
 
 		// constructors
 		Stock pih = new Stock((float) 12.4, (float) 13.1, "PIH", myDate);			
-		pih.setAsk((float) 12.4);
-		pih.setBid((float) 13.1);
-		pih.setSymbol("PIH");
-		pih.setDate(myDate);
 		myPortfilo.addStock(pih);
 
 		Stock all = new Stock((float) 5.5, (float) 5.78, "AAL", myDate);
-		all.setAsk((float) 5.5);
-		all.setBid((float) 5.78);
-		all.setSymbol("AAL");
-		all.setDate(myDate);
 		myPortfilo.addStock(all);
 
 		Stock caas = new Stock((float) 31.5, (float) 31.2, "CAAS", myDate);	
-		caas.setAsk((float) 31.5);
-		caas.setBid((float) 31.2);
-		caas.setSymbol("CAAS");
-		caas.setDate(myDate);
 		myPortfilo.addStock(caas);
 		return myPortfilo;
 	}

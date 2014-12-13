@@ -30,22 +30,22 @@ public class PortfolioServlet  extends HttpServlet {
 		
 		//create a new portfolio and change the title 
 		Portfolio portfolio2 = new Portfolio(portfolio1);
-		portfolio2.setTitle("<br>Portfolio#2</br>");
+		portfolio2.setTitle("<h1><br>Portfolio#2</h1>");
 		
 		 
-		resp.getWriter().println("<h1>before the change :</h1>");	
+		resp.getWriter().println("<h1>Before the change :</h1>");	
 		resp.getWriter().println(portfolio1.getHtmlString());// print portfolio1
 		resp.getWriter().println(portfolio2.getHtmlString());// print portfolio2
 		
 		// remove first stock from portfolio1
-		portfolio1.removeStock(stocks,0);
-		resp.getWriter().println("<h1>remove first stock at portfolio1</h1>");
+		portfolio1.removeStock(stocks);
+		resp.getWriter().println("<h1>Remove first stock from portfolio1</h1>");
 		resp.getWriter().println(portfolio1.getHtmlString());// print portfolio1 	
 		resp.getWriter().println(portfolio2.getHtmlString());// print portfolio2
 		
 		//change last stock's bid value
 		portfolio2.getStocks()[2].setBid((float) 55.5);
-		resp.getWriter().println("<h1>change last stock's bid value to 55.5  at portfolio2</h1>");
+		resp.getWriter().println("<h1>Change last stock's bid value to 55.5  at portfolio2</h1>");
 		resp.getWriter().println(portfolio1.getHtmlString());// print portfolio1 	
 		resp.getWriter().println(portfolio2.getHtmlString());// print portfolio2
 	}
