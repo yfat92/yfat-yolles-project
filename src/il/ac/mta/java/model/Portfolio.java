@@ -3,10 +3,10 @@ package il.ac.mta.java.model;
 import java.util.Date;
 
 /**
- * an arrays of stock and stocksStatus 
+ * create a copy of Portfolio  
  * @author yfat yolles
  * @since 3/12/2014
- * date 3/12/2014
+ * date 13/12/2014
  */
 public class Portfolio {
 	//members
@@ -20,34 +20,28 @@ public class Portfolio {
 	Stock[] stocks = new Stock[MAX_PORTFOLIO_SIZE];
 	StockStatus[] stocksStatus = new StockStatus[MAX_PORTFOLIO_SIZE];
 
+	//constructor
+	public Portfolio(){
+		this.title = title;
+		this.portfolioSize = portfolioSize;
+		for (int i = 0; i < portfolioSize; i++)
+		{
+			this.stocks[i] = stocks[i];
+			this.stocksStatus[i] = stocksStatus[i];
+		}
+	}
 
-	//קונסטרקטור
-	public Portfolio(String portfolioTitle, int portfolioSize, Stock stocks[],
-			StockStatus stockStatus){
-		setTitle(portfolioTitle);
-		setPortfolioSize(portfolioSize);
-		for (i =0 ; i < portfolioSize ; i++)
+	//copy constructor
+	public Portfolio(Portfolio portfolio) {
+		this.title = portfolio.getTitle();
+		this.portfolioSize = portfolio.getPortfolioSize();
+
+		stocks = new Stock[MAX_PORTFOLIO_SIZE];
+		for(int i = 0; i < portfolioSize; i++)
 		{
-			this.stocks[i] = stocks[i]; 
-			this.stocksStatus[i] = stocksStatus[i]; 	
+			stocks[i] = new Stock(portfolio.stocks[i]);
 		}
-		this.stockStatus = new StockStatus(stockStatus);
 	}
-	// קופי
-	public Portfolio(Portfolio portfolio){
-		setTitle(portfolio.getTitle());
-		setPortfolioSize(portfolio.getPortfolioSize());		
-		Stock[] tempStockArray = portfolio.getStocks();
-		StockStatus[] tempStockStatusArray = portfolio.getStocksStatus();
-		//stocksStatus = new StockStatus(portfolio.stocksStatus);
-		for (i =0 ; i < portfolioSize ; i++)
-		{
-			stocks[i] = tempStockArray[i];
-			stocksStatus[i]= tempStockStatusArray[i];						
-		}
-		
-	}
-	
 	//getter and setter
 	public Stock[] getStocks() {
 		return stocks;
@@ -90,12 +84,11 @@ public class Portfolio {
 		stocks[portfolioSize] = stock;
 		portfolioSize++;	 
 	}
-	//remove stock
+	
 	public void removeStock(Stock stock[], int index) {
 		stocks[index] = null;
 			 
 	}
-
 	
 	/**
 	 * loop for all the stocks 
@@ -111,7 +104,8 @@ public class Portfolio {
 		return getHtmlString;
 	}
 	/**
-	 *stock status information, getter and setter for the future
+	 *stock status information, copy constructor and
+	 *constructor 
 	 ** @author yfat yolles
 	 * @since 3/12/2014
 	 * date 3/12/2014
@@ -127,6 +121,26 @@ public class Portfolio {
 		private Date date;
 		private int recommendation;
 		private int stockQuantity;
+		
+		//constructor
+		public StockStatus (String symbol, float currentBid, float currentAsk, Date date, int recommendation, int stockQuantity){
+			this.symbol = getSymbol();
+			this.currentBid = getCurrentBid();
+			this.currentAsk = getCurrentAsk();
+			this.date = getDate();
+			this.recommendation = getRecommendation();
+			this.stockQuantity = getStockQuantity();	
+		}
+		
+		//copy constructor
+		public StockStatus (StockStatus stockStatus){
+			this.symbol = stockStatus.getSymbol();
+			this.currentBid = stockStatus.getCurrentBid();
+			this.currentAsk = stockStatus.getCurrentAsk();
+			this.date = stockStatus.getDate();
+			this.recommendation =stockStatus.getRecommendation();
+			this.stockQuantity = stockStatus.getStockQuantity();
+		}
 
 		//getter setter
 		public String getSymbol() {

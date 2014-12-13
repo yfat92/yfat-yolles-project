@@ -1,12 +1,18 @@
 package il.ac.mta.java.model;
-
+/**
+ * create a copy of Stock   
+ * @author yfat yolles
+ * @since 3/12/2014
+ * date 13/12/2014
+ */
 public class Stock {
 	// members
 	private float ask;
 	private float bid;
 	private String symbol;
 	private java.util.Date date;
-	//copy c'tor
+	
+	//copy constructor
 	public Stock(Stock stock) {
 		setAsk(stock.getAsk());
 		setBid(stock.getBid());

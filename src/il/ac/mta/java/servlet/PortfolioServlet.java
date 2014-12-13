@@ -27,27 +27,26 @@ public class PortfolioServlet  extends HttpServlet {
 		PortfolioService portfolioService = new PortfolioService();
 		Portfolio portfolio1 = portfolioService.getPortfolio();
 		Stock[] stocks = portfolio1.getStocks();
+		
 		//create a new portfolio and change the title 
 		Portfolio portfolio2 = new Portfolio(portfolio1);
-		portfolio2.setTitle("Portfolio#2");
+		portfolio2.setTitle("<br>Portfolio#2</br>");
 		
-		// print portfolio1 
-		resp.getWriter().println(portfolio1.getHtmlString());
-		// print portfolio2
-		resp.getWriter().println(portfolio2.getHtmlString());
+		 
+		resp.getWriter().println("<h1>before the change :</h1>");	
+		resp.getWriter().println(portfolio1.getHtmlString());// print portfolio1
+		resp.getWriter().println(portfolio2.getHtmlString());// print portfolio2
 		
 		// remove first stock from portfolio1
-		portfolio1.removeStock(stocks, 0);
-		// print portfolio1 
-		resp.getWriter().println(portfolio1.getHtmlString());
-		// print portfolio2
-		resp.getWriter().println(portfolio2.getHtmlString());
+		portfolio1.removeStock(stocks,0);
+		resp.getWriter().println("<h1>remove first stock at portfolio1</h1>");
+		resp.getWriter().println(portfolio1.getHtmlString());// print portfolio1 	
+		resp.getWriter().println(portfolio2.getHtmlString());// print portfolio2
 		
 		//change last stock's bid value
 		portfolio2.getStocks()[2].setBid((float) 55.5);
-		// print portfolio1 
-		resp.getWriter().println(portfolio1.getHtmlString());
-		// print portfolio2
-		resp.getWriter().println(portfolio2.getHtmlString());
+		resp.getWriter().println("<h1>change last stock's bid value to 55.5  at portfolio2</h1>");
+		resp.getWriter().println(portfolio1.getHtmlString());// print portfolio1 	
+		resp.getWriter().println(portfolio2.getHtmlString());// print portfolio2
 	}
 }

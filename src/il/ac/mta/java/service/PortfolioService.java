@@ -5,6 +5,7 @@ import java.util.Date;
 
 import il.ac.mta.java.model.Portfolio;
 import il.ac.mta.java.model.Stock;
+import il.ac.mta.java.servlet.PortfolioServlet;;
 /**
  *instance Portfolio
  *initialize stock data, create stock instance
@@ -23,22 +24,21 @@ public class PortfolioService {
 		Date myDate = c.getTime();
 
 		// constructors
-		Stock pih = new Stock();			
+		Stock pih = new Stock((float) 12.4, (float) 13.1, "PIH", myDate);			
 		pih.setAsk((float) 12.4);
-
 		pih.setBid((float) 13.1);
 		pih.setSymbol("PIH");
 		pih.setDate(myDate);
 		myPortfilo.addStock(pih);
 
-		Stock all = new Stock();
+		Stock all = new Stock((float) 5.5, (float) 5.78, "AAL", myDate);
 		all.setAsk((float) 5.5);
 		all.setBid((float) 5.78);
 		all.setSymbol("AAL");
 		all.setDate(myDate);
 		myPortfilo.addStock(all);
 
-		Stock caas = new Stock();	
+		Stock caas = new Stock((float) 31.5, (float) 31.2, "CAAS", myDate);	
 		caas.setAsk((float) 31.5);
 		caas.setBid((float) 31.2);
 		caas.setSymbol("CAAS");
