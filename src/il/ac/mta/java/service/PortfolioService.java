@@ -4,8 +4,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import il.ac.mta.java.model.Portfolio;
+
 import il.ac.mta.java.model.Stock;
-import il.ac.mta.java.servlet.PortfolioServlet;;
+
 /**
  *Portfolio's calculations 
  *initialize stock data, create stock instance
@@ -18,20 +19,29 @@ import il.ac.mta.java.servlet.PortfolioServlet;;
 public class PortfolioService {
 
 	public Portfolio getPortfolio(){
-		Portfolio myPortfilo = new Portfolio("Portfilo#1", 0, null, null);
+		Portfolio myPortfilo = new Portfolio(" Exercise 7 portfilo", 0, null, null,0);
 		Calendar c = Calendar.getInstance();
 		c.set(2015, 11, 15);
 		Date myDate = c.getTime();
+		myPortfilo.updateBalance(10000);
 
 		// constructors
-		Stock pih = new Stock((float) 12.4, (float) 13.1, "PIH", myDate);			
+		Stock pih = new Stock((float) 10, (float) 8.5, "pih", myDate);
 		myPortfilo.addStock(pih);
+		myPortfilo.buyStock("pih", 20);
+		
+		
 
-		Stock all = new Stock((float) 5.5, (float) 5.78, "AAL", myDate);
+		Stock all = new Stock((float) 30, (float) 25.5, "all", myDate);
 		myPortfilo.addStock(all);
+		myPortfilo.buyStock("all", 30);
+		myPortfilo.sellStock("all", -1);
 
-		Stock caas = new Stock((float) 31.5, (float) 31.2, "CAAS", myDate);	
+		Stock caas = new Stock((float) 20, (float) 15.5, "caas", myDate);
 		myPortfilo.addStock(caas);
+		myPortfilo.buyStock("caas", 40);
+		myPortfilo.removeStock("caas");
+		
 		return myPortfilo;
 	}
 

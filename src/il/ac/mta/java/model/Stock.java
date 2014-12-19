@@ -1,4 +1,7 @@
 package il.ac.mta.java.model;
+
+import java.util.Date;
+
 /**
  * this class have save stock's information
  * create a copy of Stock   
@@ -18,7 +21,7 @@ public class Stock {
 		setAsk(stock.getAsk());
 		setBid(stock.getBid());
 		setSymbol(stock.getSymbol());
-		setDate(stock.getDate());	
+		this.date = new Date(stock.date.getTime());
 	}
 	//constructor
 	public Stock(float ask, float bid, String symbol, java.util.Date date)	{
@@ -27,6 +30,7 @@ public class Stock {
 		this.symbol = symbol;
 		this.date = date;	
 	}
+
 
 	public void setAsk(float ask){
 		this.ask=ask;
