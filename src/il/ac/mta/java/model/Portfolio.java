@@ -2,8 +2,6 @@ package il.ac.mta.java.model;
 
 import java.util.Date;
 
-
-
 /**
  * the class save portfolio data 
  *  and also create a copy of Portfolio 
@@ -19,7 +17,6 @@ public class Portfolio {
 	private float balance ;
 	int i =0;
 
-
 	//array
 	Stock[] stocks = new Stock[MAX_PORTFOLIO_SIZE];
 	StockStatus[] stocksStatus = new StockStatus[MAX_PORTFOLIO_SIZE];
@@ -31,7 +28,7 @@ public class Portfolio {
 		this.balance = portfolio.getBalance();
 
 		stocks = new Stock[MAX_PORTFOLIO_SIZE];
-		for(int i = 0; i < portfolioSize; i++)
+		for(i = 0; i < portfolioSize; i++)
 		{
 			stocks[i] = new Stock(portfolio.stocks[i]);
 		}
@@ -50,46 +47,49 @@ public class Portfolio {
 		}
 	}
 
-
 	//methods
 	public void addStock(Stock stock) {
-		if (portfolioSize >= MAX_PORTFOLIO_SIZE){
-			System.out.println("“Can’t add new stock, portfolio can have only <PORTFOLIO_SIZE> stocks");
+		int countStockSymbol =0;
 
+		// find the symbol's index and count 
+		for(int i= 0 ; i < portfolioSize; i++){
+			if (stocks[i].getSymbol() ==  stock.getSymbol()){
+				countStockSymbol++;
+			}
 		}
-		else{
-			stocks[portfolioSize] = stock;			
-			stocksStatus[portfolioSize] = new Portfolio.StockStatus(stock.getSymbol()
-					, stock.getBid(), stock.getAsk(), stock.getDate(), ALGO_RECOMMENDATION.DO_NOTHING, 0);
-			portfolioSize++;
+		if (countStockSymbol == 1){
+			System.out.println("“Can’t add stock, stock whit this symbol is already exists ");			
+			return;
 		}
+		if (portfolioSize >= MAX_PORTFOLIO_SIZE){
+			System.out.println("“Can’t add new stock, portfolio can have only " +MAX_PORTFOLIO_SIZE+ " stocks");
+			return;
+		}
+
+		stocks[portfolioSize] = stock;			
+		stocksStatus[portfolioSize] = new Portfolio.StockStatus(stock.getSymbol()
+				, stock.getBid(), stock.getAsk(), stock.getDate(), ALGO_RECOMMENDATION.DO_NOTHING, 0);
+		portfolioSize++;
 	}
 
 	public boolean removeStock(String symbol ){		
-		boolean stockIsExisist = false;
-		int countStockSymbol =0;
+		boolean stockIsExisist = false;		
 		int StockSymbolIndex = 0;
-		
+
 		// find the index of symbol
 		for(int i= 0 ; i < portfolioSize; i++){
 			if (stocks[i].getSymbol() ==  symbol){
 				stockIsExisist = true;
-				countStockSymbol++;
 				StockSymbolIndex = i;
 			}
 		}
-			 
-		// if stock symbol dosn't exisist
+
+		// if stock symbol dosen't exists
 		if(stockIsExisist == false){
-			System.out.println("“Can’t remove stock, stock's name dosen't exisist");			
+			System.out.println("“Can’t remove stock, stock's name dosen't exists");			
 			return stockIsExisist;
 		}
-		// there are more then one stock whit the same symbol
-		if (countStockSymbol > 1){
-			stockIsExisist = false;
-			System.out.println("“Can’t remove stock, there are more then one stock whit this symbol");			
-			return stockIsExisist;
-		}
+
 		if (StockSymbolIndex == MAX_PORTFOLIO_SIZE - 1){
 			sellStock(symbol, stocksStatus[StockSymbolIndex].stockQuantity);
 			portfolioSize--;
@@ -107,9 +107,8 @@ public class Portfolio {
 
 	public boolean buyStock(String symbol, int quantity ){
 		boolean buyStockSucsses = false;
-		int countStockSymbol =0;
 		int stockSymbolIndex = 0;
-		
+
 		if (balance <=0){
 			System.out.println("Can’t buy stock, your balance is: " +balance );		
 			return buyStockSucsses;
@@ -118,19 +117,12 @@ public class Portfolio {
 		for(int i= 0 ; i < portfolioSize; i++){
 			if (stocks[i].getSymbol() ==  symbol){
 				buyStockSucsses = true;
-				countStockSymbol++;
 				stockSymbolIndex = i;
 			}
 		}
-		// if the stock's name dosen't exisist
+		// if the stock's name dosen't exists
 		if(buyStockSucsses == false){
-			System.out.println("Can’t buy stock, stock's name dosen't exisist");			
-			return buyStockSucsses;
-		}
-		// there are more then one stock whit this symbol
-		if (countStockSymbol > 1){
-			buyStockSucsses = false;
-			System.out.println("“Can’t buy stock, there are more then one stock whit this symbol");			
+			System.out.println("Can’t buy stock, stock's name dosen't exists");			
 			return buyStockSucsses;
 		}
 		if (quantity == -1 ){
@@ -140,7 +132,7 @@ public class Portfolio {
 			stocksStatus[stockSymbolIndex].stockQuantity += numOfStock;
 			return buyStockSucsses;
 		}
-		
+
 		balance -= quantity * stocksStatus[stockSymbolIndex].currentAsk;
 		stocksStatus[stockSymbolIndex].stockQuantity += quantity;
 		return buyStockSucsses;
@@ -149,9 +141,9 @@ public class Portfolio {
 	public boolean sellStock(String symbol, int quantity){
 		boolean sellStock = false;
 		int stockSymbolIndex =0; 
-		
+		// the quantity is invalid
 		if (quantity ==0 || quantity < -1 ){
-			System.out.println("Can’t sell stock");
+			System.out.println("Can’t sell stock, quantity is invalid");
 			return sellStock;
 		}
 
@@ -162,71 +154,32 @@ public class Portfolio {
 				stockSymbolIndex = i;
 			}
 		}
+		// the symbol dosn't find in stocks's array
+		if (sellStock == false){
+			return sellStock; 
+		}
+		// sell all quantity
 		if (quantity == -1 || quantity == stocksStatus[stockSymbolIndex].stockQuantity){
 			System.out.println("you ask to sell all stock quantity");
-			balance = stocksStatus[stockSymbolIndex].stockQuantity * stocksStatus[stockSymbolIndex].currentBid;
+			balance += stocksStatus[stockSymbolIndex].stockQuantity * stocksStatus[stockSymbolIndex].currentBid;
 			quantity = stocksStatus[stockSymbolIndex].stockQuantity ;// update the quantity to maximum
 			stocksStatus[stockSymbolIndex].stockQuantity -= quantity;
 			return sellStock;
 		}	
-		
-		// if the stocksStatus's quantity is 
-		if (sellStock == true & stocksStatus[stockSymbolIndex].stockQuantity < quantity){
-			balance = stocksStatus[stockSymbolIndex].stockQuantity * stocksStatus[stockSymbolIndex].currentBid;
+		//the client asks to sell more stock than he have
+		if (stocksStatus[stockSymbolIndex].stockQuantity < quantity){
+			balance += stocksStatus[stockSymbolIndex].stockQuantity * stocksStatus[stockSymbolIndex].currentBid;
 			quantity = stocksStatus[stockSymbolIndex].stockQuantity ;// update the quantity to maximum
 			stocksStatus[stockSymbolIndex].stockQuantity -= quantity; // update the quantity of stockQuantity
-			System.out.println("you ask to sell more stock then to actualy have, all the quantity sell");
+			System.out.println("you ask to sell more stock then to actually have, all the quantity sell");
 			return sellStock;
 		}
-
+		// Regular sale
 		balance = stocksStatus[stockSymbolIndex].stockQuantity * stocksStatus[stockSymbolIndex].currentBid;
 		stocksStatus[stockSymbolIndex].stockQuantity -= quantity;
 		return sellStock;
-
 	}		
-	
-	//getter and setter
-	public float getBalance() {
-		return balance;
-	}
-	public void setBalance(float balance) {
-		this.balance = balance;
-	}
-	public Stock[] getStocks() {
-		return stocks;
-	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public int getPortfolioSize() {
-		return portfolioSize;
-	}
-
-	public void setPortfolioSize(int portfolioSize) {
-		this.portfolioSize = portfolioSize;
-	}
-
-	public StockStatus[] getStocksStatus() {
-		return stocksStatus;
-	}
-
-	public void setStocksStatus(StockStatus[] stocksStatus) {
-		this.stocksStatus = stocksStatus;
-	}
-
-	public static int getMaxPortfolioSize() {
-		return MAX_PORTFOLIO_SIZE;
-	}
-
-	public void setStocks(Stock[] stocks) {
-		this.stocks = stocks;
-	}
 	/**
 	 * loop for all the stocks 
 	 *
@@ -269,7 +222,49 @@ public class Portfolio {
 			this.value = value;
 		}
 	}
+	//getter and setter
+	public float getBalance() {
+		return balance;
+	}
 	
+	public void setBalance(float balance) {
+		this.balance = balance;
+	}
+	
+	public Stock[] getStocks() {
+		return stocks;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public int getPortfolioSize() {
+		return portfolioSize;
+	}
+	
+	public void setPortfolioSize(int portfolioSize) {
+		this.portfolioSize = portfolioSize;
+	}
+	
+	public StockStatus[] getStocksStatus() {
+		return stocksStatus;
+	}
+	
+	public void setStocksStatus(StockStatus[] stocksStatus) {
+		this.stocksStatus = stocksStatus;
+	}
+
+	public static int getMaxPortfolioSize() {
+		return MAX_PORTFOLIO_SIZE;
+	}
+
+	public void setStocks(Stock[] stocks) {
+		this.stocks = stocks;
+	}
 	/**
 	 *stock status information, copy constructor and
 	 *constructor 

@@ -28,20 +28,21 @@ public class PortfolioService {
 		// constructors
 		Stock pih = new Stock((float) 10, (float) 8.5, "pih", myDate);
 		myPortfilo.addStock(pih);
-		myPortfilo.buyStock("pih", 20);
 		
-		
-
+	
 		Stock all = new Stock((float) 30, (float) 25.5, "all", myDate);
 		myPortfilo.addStock(all);
-		myPortfilo.buyStock("all", 30);
-		myPortfilo.sellStock("all", -1);
+
 
 		Stock caas = new Stock((float) 20, (float) 15.5, "caas", myDate);
 		myPortfilo.addStock(caas);
-		myPortfilo.buyStock("caas", 40);
-		myPortfilo.removeStock("caas");
+
 		
+		myPortfilo.buyStock("pih", 20);
+		myPortfilo.buyStock("all", 30);
+		myPortfilo.buyStock("caas", 40);
+		myPortfilo.sellStock("all", -1);	
+		myPortfilo.removeStock("caas");
 		return myPortfilo;
 	}
 
