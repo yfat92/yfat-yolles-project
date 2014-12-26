@@ -303,7 +303,27 @@ public class Portfolio {
 		private Date date;
 		private ALGO_RECOMMENDATION recommendation;
 		private int stockQuantity;
+		
+		//constructor
+		public StockStatus (String symbol, float currentBid, float currentAsk, Date date,
+				ALGO_RECOMMENDATION recommendation, int stockQuantity){
+			this.symbol = symbol;
+			this.currentBid = currentBid;
+			this.currentAsk = currentAsk;
+			this.date = date;
+			this.recommendation = recommendation;
+			this.stockQuantity = stockQuantity;	
+		}
 
+		//copy constructor
+		public StockStatus (StockStatus stockStatus){
+			this.symbol = stockStatus.getSymbol();
+			this.currentBid = stockStatus.getCurrentBid();
+			this.currentAsk = stockStatus.getCurrentAsk();
+			this.date = new Date(stockStatus.date.getTime());
+			this.recommendation =stockStatus.getRecommendation();
+			this.stockQuantity = stockStatus.getStockQuantity();
+		}
 
 		//getter setter
 		public String getSymbol() {
@@ -342,26 +362,7 @@ public class Portfolio {
 		public void setStockQuantity(int stockQuantity) {
 			this.stockQuantity = stockQuantity;
 		}
-		//constructor
-		public StockStatus (String symbol, float currentBid, float currentAsk, Date date,
-				ALGO_RECOMMENDATION recommendation, int stockQuantity){
-			this.symbol = symbol;
-			this.currentBid = currentBid;
-			this.currentAsk = currentAsk;
-			this.date = date;
-			this.recommendation = recommendation;
-			this.stockQuantity = stockQuantity;	
-		}
 
-		//copy constructor
-		public StockStatus (StockStatus stockStatus){
-			this.symbol = stockStatus.getSymbol();
-			this.currentBid = stockStatus.getCurrentBid();
-			this.currentAsk = stockStatus.getCurrentAsk();
-			this.date = new Date(stockStatus.date.getTime());
-			this.recommendation =stockStatus.getRecommendation();
-			this.stockQuantity = stockStatus.getStockQuantity();
-		}
 
 	}
 }
