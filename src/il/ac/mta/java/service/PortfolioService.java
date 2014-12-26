@@ -17,7 +17,6 @@ import il.ac.mta.java.model.Stock;
  * date 13/12/2014
  */	
 public class PortfolioService {
-
 	public Portfolio getPortfolio(){
 		Portfolio myPortfilo = new Portfolio(" Exercise 7 portfilo", 0, null, null,0);
 		Calendar c = Calendar.getInstance();
@@ -25,19 +24,15 @@ public class PortfolioService {
 		Date myDate = c.getTime();
 		myPortfilo.updateBalance(10000);
 
-		// constructors
 		Stock pih = new Stock((float) 10, (float) 8.5, "pih", myDate);
-		myPortfilo.addStock(pih);
-		
+		myPortfilo.addStock(pih);		
 	
 		Stock all = new Stock((float) 30, (float) 25.5, "all", myDate);
 		myPortfilo.addStock(all);
 
-
 		Stock caas = new Stock((float) 20, (float) 15.5, "caas", myDate);
 		myPortfilo.addStock(caas);
-
-		
+	
 		myPortfilo.buyStock("pih", 20);
 		myPortfilo.buyStock("all", 30);
 		myPortfilo.buyStock("caas", 40);
@@ -45,9 +40,4 @@ public class PortfolioService {
 		myPortfilo.removeStock("caas");
 		return myPortfilo;
 	}
-
 }
-
-
-
-

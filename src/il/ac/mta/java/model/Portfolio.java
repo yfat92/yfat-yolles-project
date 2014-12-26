@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * the class save portfolio data 
  *  and also create a copy of Portfolio 
- * @author yfat yolles
+ * @author Yfat Yolles
  * @since 3/12/2014
  * date 13/12/2014
  */
@@ -43,11 +43,16 @@ public class Portfolio {
 		for (int i = 0; i < portfolioSize; i++)
 		{
 			this.stocks[i] = stocks[i];
-			this.stocksStatus[i] = stocksStatus[i];
+			this.stocksStatus[i] = stockStatus[i];
 		}
 	}
 
 	//methods
+	/**
+	*This method add stock to the array.
+	*it's also do validation, if the client  
+	*ask to add stock with a symbol that already exists
+	*/
 	public void addStock(Stock stock) {
 		int countStockSymbol =0;
 
@@ -71,7 +76,11 @@ public class Portfolio {
 				, stock.getBid(), stock.getAsk(), stock.getDate(), ALGO_RECOMMENDATION.DO_NOTHING, 0);
 		portfolioSize++;
 	}
-
+	/**
+	*This method remove stock from stock's array and sell 
+	* all the stock's quantity
+	* @return boolean if the remove succeed
+	*/
 	public boolean removeStock(String symbol ){		
 		boolean stockIsExisist = false;		
 		int StockSymbolIndex = 0;
@@ -89,7 +98,7 @@ public class Portfolio {
 			System.out.println("“Can’t remove stock, stock's name dosen't exists");			
 			return stockIsExisist;
 		}
-
+		// if stock index is the last
 		if (StockSymbolIndex == MAX_PORTFOLIO_SIZE - 1){
 			sellStock(symbol, stocksStatus[StockSymbolIndex].stockQuantity);
 			portfolioSize--;
@@ -104,7 +113,11 @@ public class Portfolio {
 		}
 		return stockIsExisist;
 	}
-
+	/**
+	*This method buy stocks according to the quantity    
+	*  
+	* @return boolean if the buy succeed
+	*/
 	public boolean buyStock(String symbol, int quantity ){
 		boolean buyStockSucsses = false;
 		int stockSymbolIndex = 0;
@@ -126,21 +139,28 @@ public class Portfolio {
 			return buyStockSucsses;
 		}
 		if (quantity == -1 ){
-			float stockPrice = stocksStatus[stockSymbolIndex].currentAsk;
-			int numOfStock = (int)(double)(Math.floor(balance/stockPrice));
-			balance -= numOfStock * stockPrice;
-			stocksStatus[stockSymbolIndex].stockQuantity += numOfStock;
+			int numOfStocks = (int)(Math.floor((double)(balance/stocksStatus[stockSymbolIndex].currentAsk)));
+			this.stocksStatus[stockSymbolIndex].stockQuantity += numOfStocks;
+			updateBalance(-numOfStocks * stocksStatus[stockSymbolIndex].currentAsk);
 			return buyStockSucsses;
 		}
 
-		balance -= quantity * stocksStatus[stockSymbolIndex].currentAsk;
-		stocksStatus[stockSymbolIndex].stockQuantity += quantity;
+		updateBalance(-quantity * this.stocksStatus[stockSymbolIndex].currentAsk);
+		this.stocksStatus[stockSymbolIndex].stockQuantity += quantity;
 		return buyStockSucsses;
 
 	}
+	/**
+	*This method sell stock and remove it from the array.
+	*If the quantity is equal or bigger then stock's quantity.
+	*it's also do validation, if the client add invalid quantity.
+	*The method update costumer's balance and number of stocks that the customer-owned
+	*@return whether the sale succeeded
+	*/
 	public boolean sellStock(String symbol, int quantity){
 		boolean sellStock = false;
 		int stockSymbolIndex =0; 
+		
 		// the quantity is invalid
 		if (quantity ==0 || quantity < -1 ){
 			System.out.println("Can’t sell stock, quantity is invalid");
@@ -154,35 +174,28 @@ public class Portfolio {
 				stockSymbolIndex = i;
 			}
 		}
-		// the symbol dosn't find in stocks's array
+		// the symbol dosen't exists at stocks's array
 		if (sellStock == false){
 			return sellStock; 
 		}
 		// sell all quantity
 		if (quantity == -1 || quantity == stocksStatus[stockSymbolIndex].stockQuantity){
-			System.out.println("you ask to sell all stock quantity");
-			balance += stocksStatus[stockSymbolIndex].stockQuantity * stocksStatus[stockSymbolIndex].currentBid;
-			quantity = stocksStatus[stockSymbolIndex].stockQuantity ;// update the quantity to maximum
-			stocksStatus[stockSymbolIndex].stockQuantity -= quantity;
-			return sellStock;
+			quantity = this.stocksStatus[stockSymbolIndex].stockQuantity;
 		}	
 		//the client asks to sell more stock than he have
 		if (stocksStatus[stockSymbolIndex].stockQuantity < quantity){
-			balance += stocksStatus[stockSymbolIndex].stockQuantity * stocksStatus[stockSymbolIndex].currentBid;
-			quantity = stocksStatus[stockSymbolIndex].stockQuantity ;// update the quantity to maximum
-			stocksStatus[stockSymbolIndex].stockQuantity -= quantity; // update the quantity of stockQuantity
 			System.out.println("you ask to sell more stock then to actually have, all the quantity sell");
-			return sellStock;
+			quantity = this.stocksStatus[stockSymbolIndex].stockQuantity;
 		}
 		// Regular sale
-		balance = stocksStatus[stockSymbolIndex].stockQuantity * stocksStatus[stockSymbolIndex].currentBid;
-		stocksStatus[stockSymbolIndex].stockQuantity -= quantity;
+		updateBalance(quantity * this.stocksStatus[stockSymbolIndex].currentBid);
+		this.stocksStatus[stockSymbolIndex].stockQuantity -= quantity;
+	
 		return sellStock;
 	}		
 
 	/**
-	 * loop for all the stocks 
-	 *
+	 * Loop that contains the values of the stock portfolio   
 	 * @return string whit stocks data
 	 */
 	public String getHtmlString(){
@@ -195,6 +208,10 @@ public class Portfolio {
 				+getTotalValue(stocksStatus)+ "$, Balnce :"+ getBalance()+ "$ </br>" ;
 		return getHtmlString;
 	}
+	/**
+	 * string contains the values of the stock    
+	 * @return string whit stocks data
+	 */
 	public float getStocksValue(StockStatus stockStatus[]) {
 		float allStocksValue = 0;
 		for (int i = 0; i < portfolioSize; i++) {
@@ -202,19 +219,25 @@ public class Portfolio {
 		}
 		return allStocksValue;
 	}
+	/**
+	 * A method that returns how much money the customer have. 
+	 *  ie, how much cash he holds (balance) and value of stocks that he has (stockStatus) 
+	 * @return float 
+	 */
 	public float getTotalValue(StockStatus stockStatus[]){
 		float totalValue = getStocksValue(stockStatus) + getBalance();
 		return totalValue;
 	}
-	//java doc
+	/**
+	 * updates customer balance after purchase and sale of stocks
+	 */
 	public void updateBalance(float amount){
-		this.balance = amount;
-		if(amount < 0){
-			System.out.println("the valaue is negative");
-		}
+		this.balance += amount;
 	}
 
-	//java doc ? 
+	/**
+	 * emum for recommendation status
+	 */
 	public enum  ALGO_RECOMMENDATION{
 		DO_NOTHING(0),BUY(1),SELL(3);
 		private int value;
@@ -270,9 +293,9 @@ public class Portfolio {
 	 *constructor 
 	 ** @author yfat yolles
 	 * @since 3/12/2014
-	 * date 13/12/2014
+	 * date 25/12/2014
 	 */	
-	//inner class
+	
 	public class StockStatus {
 
 		private String symbol;

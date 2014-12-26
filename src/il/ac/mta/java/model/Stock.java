@@ -31,7 +31,6 @@ public class Stock {
 		this.date = date;	
 	}
 
-
 	public void setAsk(float ask){
 		this.ask=ask;
 	}
