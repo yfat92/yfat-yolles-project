@@ -28,6 +28,11 @@ public class Portfolio {
 		this.title = portfolio.getTitle();
 		this.portfolioSize = portfolio.getPortfolioSize();
 		this.balance = portfolio.getBalance();
+		for (int i = 0; i < portfolioSize; i++)
+		{
+			this.stocksStatus[i] = new StockStatus(getStocksStatus()[i]);
+		}
+		
 	}
 
 	//constructor
