@@ -11,10 +11,10 @@ import java.util.Date;
  */
 public class Stock {
 	// members
-	private float ask;
-	private float bid;
-	private String symbol;
-	private java.util.Date date;
+	protected float ask;
+	protected float bid;
+	protected String symbol;
+	protected java.util.Date date;
 
 	//copy constructor
 	public Stock(Stock stock) {
@@ -61,8 +61,3 @@ public class Stock {
 		return "<br><b>Symbol: </b>" + getSymbol() + ", <b>ask: </b>" + getAsk() + "<b>, bid: </b>" + getBid() + "<b> , date:  </b>" + getDate();
 	}
 }
-
-
-
-
-

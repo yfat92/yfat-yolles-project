@@ -7,11 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-
-
 import il.ac.mta.java.model.Portfolio;
-import il.ac.mta.java.model.Portfolio.StockStatus;
-import il.ac.mta.java.model.Stock;
+import il.ac.mta.java.model.StockStatus;
 import il.ac.mta.java.service.PortfolioService;
 /**
  *this class is print to html landing page 
@@ -28,7 +25,6 @@ public class PortfolioServlet  extends HttpServlet {
 		
 		PortfolioService portfolioService = new PortfolioService();
 		Portfolio portfolio1 = portfolioService.getPortfolio();
-		Stock[] stocks = portfolio1.getStocks();
 		StockStatus[] stocksStatus = portfolio1.getStocksStatus();
 		resp.getWriter().println(portfolio1.getHtmlString());		
 	}
