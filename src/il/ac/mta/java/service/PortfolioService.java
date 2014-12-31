@@ -18,7 +18,7 @@ import il.ac.mta.java.model.Stock;
  */	
 public class PortfolioService {
 	public Portfolio getPortfolio(){
-		Portfolio myPortfilo = new Portfolio(" Exercise 7 portfilo", 0, null, null,0);
+		Portfolio myPortfilo = new Portfolio(" Exercise 8 portfilo", 0, null, null,0);
 		Calendar c = Calendar.getInstance();
 		c.set(2015, 11, 15);
 		Date myDate = c.getTime();
