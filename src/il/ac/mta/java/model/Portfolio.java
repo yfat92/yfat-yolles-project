@@ -1,6 +1,11 @@
 package il.ac.mta.java.model;
 
 import java.util.Date;
+
+import il.ac.mta.java.exception.BalanceException;
+import il.ac.mta.java.exception.PortfolioFullException;
+import il.ac.mta.java.exception.StockAlreadyExistsException;
+import il.ac.mta.java.exception.StockNotExistException;
 import il.ac.mta.java.model.StockStatus;
 import il.ac.mta.java.model.Stock;
 
@@ -53,7 +58,7 @@ public class Portfolio {
 	*it's also do validation, if the client  
 	*ask to add stock with a symbol that already exists
 	*/
-	public void addStock(Stock stock) {
+	public void addStock(Stock stock) throws StockAlreadyExistsException, PortfolioFullException {
 		int countStockSymbol =0;
 
 		// find the symbol's index and count 
@@ -62,13 +67,11 @@ public class Portfolio {
 				countStockSymbol++;
 			}
 		}
-		if (countStockSymbol == 1){
-			System.out.println("“Can’t add stock, stock whit this symbol is already exists ");			
-			return;
+		if(countStockSymbol == 1) {
+			throw new StockAlreadyExistsException(stock.getSymbol());
 		}
-		if (portfolioSize >= MAX_PORTFOLIO_SIZE){
-			System.out.println("“Can’t add new stock, portfolio can have only " +MAX_PORTFOLIO_SIZE+ " stocks");
-			return;
+		if(portfolioSize >= MAX_PORTFOLIO_SIZE) {
+			throw new PortfolioFullException();
 		}
 
 		
@@ -81,7 +84,7 @@ public class Portfolio {
 	* all the stock's quantity
 	* @return boolean if the remove succeed
 	*/
-	public boolean removeStock(String symbol ){		
+	public void removeStock(String symbol ) throws StockNotExistException{		
 		boolean stockIsExisist = false;		
 		int StockSymbolIndex = 0;
 
@@ -95,35 +98,31 @@ public class Portfolio {
 
 		// if stock symbol dosen't exists
 		if(stockIsExisist == false){
-			System.out.println("“Can’t remove stock, stock's name dosen't exists");			
-			return stockIsExisist;
+			throw new StockNotExistException();	
 		}
 		// if stock index is the last
 		if (StockSymbolIndex == MAX_PORTFOLIO_SIZE - 1){
 			sellStock(symbol, stocksStatus[StockSymbolIndex].getStockQuantity());
 			portfolioSize--;
-			return stockIsExisist;
 		}
+		
 		if (stockIsExisist == true){
 			sellStock(symbol, stocksStatus[StockSymbolIndex].getStockQuantity());
 			stocksStatus[StockSymbolIndex] = stocksStatus[portfolioSize-1];
 			portfolioSize--;
-			return stockIsExisist;
 		}
-		return stockIsExisist;
 	}
 	/**
 	*This method buy stocks according to the quantity    
 	*  
 	* @return boolean if the buy succeed
 	*/
-	public boolean buyStock(String symbol, int quantity ){
+	public void buyStock(String symbol, int quantity )throws BalanceException ,StockNotExistException{
 		boolean buyStockSucsses = false;
 		int stockSymbolIndex = 0;
 
 		if (balance <=0){
-			System.out.println("Can’t buy stock, your balance is: " +balance );		
-			return buyStockSucsses;
+			throw new BalanceException(balance);
 		}
 		// find the index of symbol
 		for(int i= 0 ; i < portfolioSize; i++){
@@ -134,19 +133,16 @@ public class Portfolio {
 		}
 		// if the stock's name dosen't exists
 		if(buyStockSucsses == false){
-			System.out.println("Can’t buy stock, stock's name dosen't exists");			
-			return buyStockSucsses;
+			throw new StockNotExistException();
 		}
 		if (quantity == -1 ){
 			int numOfStocks = (int)(Math.floor((double)(balance/stocksStatus[stockSymbolIndex].ask)));
 			this.stocksStatus[stockSymbolIndex].stockQuantity += numOfStocks;
 			updateBalance(-numOfStocks * stocksStatus[stockSymbolIndex].ask);
-			return buyStockSucsses;
 		}
 
 		updateBalance(-quantity * this.stocksStatus[stockSymbolIndex].ask);
 		this.stocksStatus[stockSymbolIndex].stockQuantity += quantity;
-		return buyStockSucsses;
 
 	}
 	/**
@@ -156,14 +152,13 @@ public class Portfolio {
 	*The method update costumer's balance and number of stocks that the customer-owned
 	*@return whether the sale succeeded
 	*/
-	public boolean sellStock(String symbol, int quantity){
+	public void sellStock(String symbol, int quantity) throws StockNotExistException{
 		boolean sellStock = false;
 		int stockSymbolIndex =0; 
 		
 		// the quantity is invalid
 		if (quantity ==0 || quantity < -1 ){
-			System.out.println("Can’t sell stock, quantity is invalid");
-			return sellStock;
+			// ask hanan, exeption dose not exisest 
 		}
 
 		// find  stock's index to sell 
@@ -175,7 +170,7 @@ public class Portfolio {
 		}
 		// the symbol dosen't exists at stocks's array
 		if (sellStock == false){
-			return sellStock; 
+			throw new StockNotExistException();
 		}
 		// sell all quantity
 		if (quantity == -1 || quantity == stocksStatus[stockSymbolIndex].stockQuantity){
@@ -189,8 +184,6 @@ public class Portfolio {
 		// Regular sale
 		updateBalance(quantity * this.stocksStatus[stockSymbolIndex].bid);
 		this.stocksStatus[stockSymbolIndex].stockQuantity -= quantity;
-	
-		return sellStock;
 	}		
 
 	/**
