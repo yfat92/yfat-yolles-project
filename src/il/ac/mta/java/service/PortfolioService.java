@@ -37,7 +37,7 @@ public class PortfolioService  {
 
 		Stock caas = new Stock((float) 20, (float) 15.5, "caas", myDate);
 		myPortfilo.addStock(caas);
-
+		myPortfilo.addStock(caas);
 		
 		myPortfilo.buyStock("pih", 20);
 		myPortfilo.buyStock("all", 30);
