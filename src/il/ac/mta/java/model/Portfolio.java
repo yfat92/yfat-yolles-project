@@ -4,6 +4,7 @@ import java.util.Date;
 
 import il.ac.mta.java.exception.BalanceException;
 import il.ac.mta.java.exception.PortfolioFullException;
+import il.ac.mta.java.exception.QuantityInvalidException;
 import il.ac.mta.java.exception.StockAlreadyExistsException;
 import il.ac.mta.java.exception.StockNotExistException;
 import il.ac.mta.java.model.StockStatus;
@@ -84,7 +85,7 @@ public class Portfolio {
 	* all the stock's quantity
 	* @return boolean if the remove succeed
 	*/
-	public void removeStock(String symbol ) throws StockNotExistException{		
+	public void removeStock(String symbol ) throws StockNotExistException, QuantityInvalidException{		
 		boolean stockIsExisist = false;		
 		int StockSymbolIndex = 0;
 
@@ -152,13 +153,13 @@ public class Portfolio {
 	*The method update costumer's balance and number of stocks that the customer-owned
 	*@return whether the sale succeeded
 	*/
-	public void sellStock(String symbol, int quantity) throws StockNotExistException{
+	public void sellStock(String symbol, int quantity) throws StockNotExistException,QuantityInvalidException{
 		boolean sellStock = false;
 		int stockSymbolIndex =0; 
 		
 		// the quantity is invalid
 		if (quantity ==0 || quantity < -1 ){
-			// ask hanan, exeption dose not exisest 
+			throw new QuantityInvalidException(quantity);
 		}
 
 		// find  stock's index to sell 
