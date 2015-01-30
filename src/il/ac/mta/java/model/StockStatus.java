@@ -25,11 +25,16 @@ public class StockStatus extends Stock{
 		this.recommendation = recommendation;
 		this.stockQuantity = stockQuantity;	
 	}
+	public StockStatus(){
+		super();
+		this.recommendation = ALGO_RECOMMENDATION.DO_NOTHING;
+		this.stockQuantity = 0;
+	}
 
 	//copy constructor
 	public StockStatus (StockStatus stockStatus){
 		super(stockStatus);
-		this.recommendation =stockStatus.getRecommendation();
+		this.recommendation = stockStatus.getRecommendation();
 		this.stockQuantity = stockStatus.getStockQuantity();
 	}
 	public ALGO_RECOMMENDATION getRecommendation() {

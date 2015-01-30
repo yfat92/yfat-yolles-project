@@ -18,9 +18,9 @@ public class Stock {
 
 	//copy constructor
 	public Stock(Stock stock) {
-		setAsk(stock.getAsk());
-		setBid(stock.getBid());
-		setSymbol(stock.getSymbol());
+		this.ask = stock.getAsk();
+		this.bid = stock.getBid();
+		this.symbol = stock.getSymbol();
 		this.date = new Date(stock.date.getTime());
 	}
 	//constructor
@@ -31,6 +31,12 @@ public class Stock {
 		this.date = date;	
 	}
 
+	public Stock() {
+		this.ask = 0;
+		this.bid = 0;
+		this.symbol = null;
+		this.date = null;
+	}
 	public void setAsk(float ask){
 		this.ask=ask;
 	}

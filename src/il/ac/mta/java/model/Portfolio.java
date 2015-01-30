@@ -1,12 +1,11 @@
 package il.ac.mta.java.model;
 
 import java.util.Date;
+import java.util.List;
 
-import il.ac.mta.java.exception.BalanceException;
-import il.ac.mta.java.exception.PortfolioFullException;
-import il.ac.mta.java.exception.QuantityInvalidException;
-import il.ac.mta.java.exception.StockAlreadyExistsException;
-import il.ac.mta.java.exception.StockNotExistException;
+import org.apache.tools.ant.types.Quantifier;
+
+import il.ac.mta.exception.*;
 import il.ac.mta.java.model.StockStatus;
 import il.ac.mta.java.model.Stock;
 
@@ -14,6 +13,7 @@ import il.ac.mta.java.model.Stock;
  * the class save portfolio data 
  *  and also create a copy of Portfolio 
  * @author Yfat Yolles
+ * @param <getStockStocks>
  * @since 3/12/2014
  * date 13/12/2014
  */
@@ -37,8 +37,7 @@ public class Portfolio {
 		for (int i = 0; i < portfolioSize; i++)
 		{
 			this.stocksStatus[i] = new StockStatus(getStocksStatus()[i]);
-		}
-		
+		}		
 	}
 
 	//constructor
@@ -51,6 +50,13 @@ public class Portfolio {
 		{
 			this.stocksStatus[i] = stockStatus[i];
 		}
+	}
+	public Portfolio(List<StockStatus> stockStatuses){
+		for(int i = 0; i < portfolioSize; i++)
+			this.stocksStatus[i] = stockStatuses.get(i);
+	}
+	public Portfolio(){
+		setStocksStatus(new StockStatus[MAX_PORTFOLIO_SIZE]);
 	}
 
 	//methods
@@ -85,7 +91,7 @@ public class Portfolio {
 	* all the stock's quantity
 	* @return boolean if the remove succeed
 	*/
-	public void removeStock(String symbol ) throws StockNotExistException, QuantityInvalidException{		
+	public void removeStock(String symbol ) throws StockNotExistsException,IllegalQuantityException {		
 		boolean stockIsExisist = false;		
 		int StockSymbolIndex = 0;
 
@@ -99,7 +105,7 @@ public class Portfolio {
 
 		// if stock symbol dosen't exists
 		if(stockIsExisist == false){
-			throw new StockNotExistException();	
+			throw new StockNotExistsException(symbol);	
 		}
 		// if stock index is the last
 		if (StockSymbolIndex == MAX_PORTFOLIO_SIZE - 1){
@@ -118,12 +124,12 @@ public class Portfolio {
 	*  
 	* @return boolean if the buy succeed
 	*/
-	public void buyStock(String symbol, int quantity )throws BalanceException ,StockNotExistException{
+	public void buyStock(String symbol, int quantity )throws BalanceException , StockNotExistsException {
 		boolean buyStockSucsses = false;
 		int stockSymbolIndex = 0;
 
 		if (balance <=0){
-			throw new BalanceException(balance);
+			throw new StockNotExistsException(symbol);
 		}
 		// find the index of symbol
 		for(int i= 0 ; i < portfolioSize; i++){
@@ -134,7 +140,7 @@ public class Portfolio {
 		}
 		// if the stock's name dosen't exists
 		if(buyStockSucsses == false){
-			throw new StockNotExistException();
+			throw new StockNotExistsException(symbol);
 		}
 		if (quantity == -1 ){
 			int numOfStocks = (int)(Math.floor((double)(balance/stocksStatus[stockSymbolIndex].ask)));
@@ -153,13 +159,13 @@ public class Portfolio {
 	*The method update costumer's balance and number of stocks that the customer-owned
 	*@return whether the sale succeeded
 	*/
-	public void sellStock(String symbol, int quantity) throws StockNotExistException,QuantityInvalidException{
+	public void sellStock(String symbol, int quantity) throws StockNotExistsException ,IllegalQuantityException {
 		boolean sellStock = false;
 		int stockSymbolIndex =0; 
 		
 		// the quantity is invalid
 		if (quantity ==0 || quantity < -1 ){
-			throw new QuantityInvalidException(quantity);
+			throw new IllegalQuantityException();
 		}
 
 		// find  stock's index to sell 
@@ -171,7 +177,7 @@ public class Portfolio {
 		}
 		// the symbol dosen't exists at stocks's array
 		if (sellStock == false){
-			throw new StockNotExistException();
+			throw new StockNotExistsException(symbol);
 		}
 		// sell all quantity
 		if (quantity == -1 || quantity == stocksStatus[stockSymbolIndex].stockQuantity){
@@ -262,6 +268,10 @@ public class Portfolio {
 		this.portfolioSize = portfolioSize;
 	}
 	
+	public StockStatus[] getStocks() {
+		return this.stocksStatus;
+	}
+	
 	public StockStatus[] getStocksStatus() {
 		return stocksStatus;
 	}
@@ -272,5 +282,16 @@ public class Portfolio {
 
 	public static int getMaxPortfolioSize() {
 		return MAX_PORTFOLIO_SIZE;
+	}
+	public StockStatus findBySymbol(String symbol) throws StockNotExistsException {
+		for(int i = 0; i < portfolioSize; i++)
+		{
+			if(this.stocksStatus[i] != null)
+			{
+				if(this.stocksStatus[i].getSymbol().toLowerCase().equals(symbol))	
+					return this.stocksStatus[i];
+			}	
+		}
+		throw new StockNotExistsException(symbol);
 	}
 }
