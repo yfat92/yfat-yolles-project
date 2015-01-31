@@ -48,11 +48,10 @@ public class Portfolio {
 			this.stocksStatus[i] = stockStatus[i];
 		}
 	}
-
 	public Portfolio(List<StockStatus> stockStatuses) {
-		for (int i = 0; i < portfolioSize; i++)
-			this.stocksStatus[i] = stockStatuses.get(i);
-	}
+        for (int i = 0; i < stockStatuses.size() /*portfolioSize*/; i++)
+            this.stocksStatus[i] = stockStatuses.get(i);
+    }
 
 	public Portfolio() {
 		setStocksStatus(new StockStatus[MAX_PORTFOLIO_SIZE]);

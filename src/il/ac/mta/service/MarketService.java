@@ -249,7 +249,8 @@ public class MarketService {
 
 	private Stock fromJson(JSONObject stockJson) {
 		try {
-			Stock ret = new Stock(null);
+			Stock ret = new Stock();
+			//Stock ret = new Stock(null);
 			ret.setSymbol(stockJson.getString("Symbol"));
 			if (!stockJson.isNull("LastTradePriceOnly"))
 				ret.setAsk((float) stockJson.getDouble("LastTradePriceOnly"));
