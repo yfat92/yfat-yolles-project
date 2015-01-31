@@ -14,30 +14,27 @@ import javax.servlet.http.HttpServletResponse;
 public class CronServlet extends AbstractAlgoServlet {
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		/*Portfolio portfolio = portfolioService.getPortfolio();
-		if(portfolio.getStocks().length == 0) {
-			createMockStocks();
-		}*/
-		
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		/*
+		 * Portfolio portfolio = portfolioService.getPortfolio();
+		 * if(portfolio.getStocks().length == 0) { createMockStocks(); }
+		 */
+
 		portfolioService.update();
 	}
-	
+
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		doPost(req, resp);
 	}
-	
-	/*private void createMockStocks() {
-		String[] symbols = {"PIH","GOOG","BIRT","ALLT","ZNGA"};
-		for (int i=0; i<symbols.length; i++){
-			try {
-				portfolioService.addStock(symbols[i]);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}*/
+
+	/*
+	 * private void createMockStocks() { String[] symbols =
+	 * {"PIH","GOOG","BIRT","ALLT","ZNGA"}; for (int i=0; i<symbols.length;
+	 * i++){ try { portfolioService.addStock(symbols[i]); } catch (Exception e)
+	 * { // TODO Auto-generated catch block e.printStackTrace(); } } }
+	 */
 }

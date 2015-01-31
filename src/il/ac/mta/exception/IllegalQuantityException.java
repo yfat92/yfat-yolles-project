@@ -11,7 +11,7 @@ public class IllegalQuantityException extends Exception {
 	public IllegalQuantityException() {
 		super("Quantity must be positive!");
 	}
-	
+
 	public IllegalQuantityException(String message) {
 		super(message);
 	}

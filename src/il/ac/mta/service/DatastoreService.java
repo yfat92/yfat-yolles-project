@@ -5,7 +5,7 @@ import il.ac.mta.java.model.*;
 import il.ac.mta.java.*;
 import il.ac.mta.service.PortfolioService;
 import il.ac.mta.java.model.Stock;
-import  il.ac.mta.java.model.StockStatus;
+import il.ac.mta.java.model.StockStatus;
 import il.ac.mta.java.model.Portfolio.ALGO_RECOMMENDATION;
 
 import java.util.ArrayList;
@@ -56,7 +56,8 @@ public class DatastoreService {
 	private static final String PORTFOLIO_BALANCE = "balance";
 	private static final String SYMBOL_LIST = "symbol_array";
 
-	private final Logger log = Logger.getLogger(DatastoreService.class.getSimpleName()); 
+	private final Logger log = Logger.getLogger(DatastoreService.class
+			.getSimpleName());
 
 	private static DatastoreService instance = new DatastoreService();
 
@@ -64,24 +65,33 @@ public class DatastoreService {
 		return instance;
 	}
 
-	private DatastoreService() {}
+	private DatastoreService() {
+	}
 
 	/**
 	 * Get stock trend
-	 * @param symbol the symbol of the stock.
-	 * @param days trend days (from now back for number of days)
+	 * 
+	 * @param symbol
+	 *            the symbol of the stock.
+	 * @param days
+	 *            trend days (from now back for number of days)
 	 * @return a list of stocks, all of same symbol, one per day.
 	 */
 	public List<StockStatus> getStockHistory(String symbol, int days) {
 
-		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
 
-		Filter fSymbol = new FilterPredicate(SYMBOL, FilterOperator.EQUAL, symbol);
+		Filter fSymbol = new FilterPredicate(SYMBOL, FilterOperator.EQUAL,
+				symbol);
 		final long oneDay = TimeUnit.DAYS.toMillis(1);
-		final long daysAgo = System.currentTimeMillis() - oneDay*days;
-		Filter fdays = new FilterPredicate(DAY, FilterOperator.GREATER_THAN_OR_EQUAL, daysAgo);
+		final long daysAgo = System.currentTimeMillis() - oneDay * days;
+		Filter fdays = new FilterPredicate(DAY,
+				FilterOperator.GREATER_THAN_OR_EQUAL, daysAgo);
 
-		Query q = new Query(NAMESPACE_STOCK).setFilter(CompositeFilterOperator.and(fSymbol, fdays)).addSort(DAY, SortDirection.DESCENDING);
+		Query q = new Query(NAMESPACE_STOCK).setFilter(
+				CompositeFilterOperator.and(fSymbol, fdays)).addSort(DAY,
+				SortDirection.DESCENDING);
 
 		// Use PreparedQuery interface to retrieve results
 		PreparedQuery pq = datastore.prepare(q);
@@ -90,7 +100,8 @@ public class DatastoreService {
 		for (Entity result : pq.asIterable()) {
 			StockStatus stock = fromStockEntry(result);
 
-			if(stock != null) ret.add(stock);
+			if (stock != null)
+				ret.add(stock);
 		}
 
 		return ret;
@@ -100,7 +111,8 @@ public class DatastoreService {
 	 * Persist stock daily data.
 	 */
 	public void saveToDataStore(List<StockStatus> stockList) {
-		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
 
 		List<Entity> store = new LinkedList<Entity>();
 		for (StockStatus stock : stockList) {
@@ -109,62 +121,61 @@ public class DatastoreService {
 
 		try {
 			datastore.put(store);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			log.log(Level.SEVERE, e.getMessage());
 		}
 	}
-	
+
 	public void saveStock(StockStatus stock) {
 		try {
-			com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+			com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory
+					.getDatastoreService();
 			datastore.put(stockToEntity(stock));
-		}catch(Exception e) {
+		} catch (Exception e) {
 			log.log(Level.SEVERE, e.getMessage());
 		}
 	}
 
 	/**
-	 * This list contains all selected symbols.
-	 * This method first deletes all namespace and than repopulate it with new symbols
-	 * @param array - new selected symbols list.
+	 * This list contains all selected symbols. This method first deletes all
+	 * namespace and than repopulate it with new symbols
+	 * 
+	 * @param array
+	 *            - new selected symbols list.
 	 */
-	/*public void updateStockList(List<String> toPersist) {
-
-		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-		//delete persisted symbols
-		Query q = new Query(NAMESPACE_STOCK_SYMBOL);
-
-		// Use PreparedQuery interface to retrieve results
-		PreparedQuery pq = datastore.prepare(q);
-
-		List<Key> keys = new ArrayList<Key>();
-		for (Entity result : pq.asIterable()) {
-			keys.add(result.getKey());
-		}
-
-		datastore.delete(keys);
-
-		//convert java list to google API entities.
-		List<Entity> store = new LinkedList<Entity>();
-		for (String s : toPersist) {
-			Key key = KeyFactory.createKey(NAMESPACE_STOCK_SYMBOL, s);
-
-			Entity entity = new Entity(key);
-			entity.setProperty("id", s);
-
-			store.add(entity);
-		}
-
-		//make store
-		datastore.put(store);
-	}*/
+	/*
+	 * public void updateStockList(List<String> toPersist) {
+	 * 
+	 * com.google.appengine.api.datastore.DatastoreService datastore =
+	 * DatastoreServiceFactory.getDatastoreService();
+	 * 
+	 * //delete persisted symbols Query q = new Query(NAMESPACE_STOCK_SYMBOL);
+	 * 
+	 * // Use PreparedQuery interface to retrieve results PreparedQuery pq =
+	 * datastore.prepare(q);
+	 * 
+	 * List<Key> keys = new ArrayList<Key>(); for (Entity result :
+	 * pq.asIterable()) { keys.add(result.getKey()); }
+	 * 
+	 * datastore.delete(keys);
+	 * 
+	 * //convert java list to google API entities. List<Entity> store = new
+	 * LinkedList<Entity>(); for (String s : toPersist) { Key key =
+	 * KeyFactory.createKey(NAMESPACE_STOCK_SYMBOL, s);
+	 * 
+	 * Entity entity = new Entity(key); entity.setProperty("id", s);
+	 * 
+	 * store.add(entity); }
+	 * 
+	 * //make store datastore.put(store); }
+	 */
 
 	/**
 	 * get past marked symbols as selected.
 	 */
 	public List<String> fetchPersistedSymbols() {
-		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
 		Query q = new Query(NAMESPACE_STOCK_SYMBOL);
 
 		PreparedQuery pq = datastore.prepare(q);
@@ -172,7 +183,8 @@ public class DatastoreService {
 		List<String> ret = new ArrayList<String>();
 		for (Entity result : pq.asIterable()) {
 			String s = (String) result.getProperty("id");
-			if(s != null) ret.add(s);
+			if (s != null)
+				ret.add(s);
 		}
 
 		return ret;
@@ -180,30 +192,33 @@ public class DatastoreService {
 
 	public Portfolio loadPortfolilo() {
 		Portfolio portfolio;
-		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
 
 		Key key = KeyFactory.createKey(NAMESPACE_PORTFOLIO, 1);
 		try {
 			Entity entity = datastore.get(key);
-			
+
 			@SuppressWarnings("unchecked")
-			List<String> symbolArray = (List<String>) entity.getProperty(SYMBOL_LIST);
+			List<String> symbolArray = (List<String>) entity
+					.getProperty(SYMBOL_LIST);
 			List<StockStatus> stockStatuses = new ArrayList<StockStatus>();
-			if(symbolArray != null) {
+			if (symbolArray != null) {
 				for (String symbol : symbolArray) {
 					List<StockStatus> stockHistory = getStockHistory(symbol, 30);
 					stockStatuses.add(stockHistory.get(0));
 				}
-				
+
 				portfolio = new Portfolio(stockStatuses);
-			}else {
+			} else {
 				portfolio = new Portfolio();
 			}
-			
-			portfolio.setTitle((String)entity.getProperty(TITLE));
+
+			portfolio.setTitle((String) entity.getProperty(TITLE));
 
 		} catch (EntityNotFoundException e) {
-			//no account details found - create a new object and store it to db.
+			// no account details found - create a new object and store it to
+			// db.
 			portfolio = new Portfolio();
 			Entity entity = portfolioToEntity(portfolio);
 			datastore.put(entity);
@@ -215,10 +230,11 @@ public class DatastoreService {
 	/**
 	 * <h3>The easiest way to update account:</h3>
 	 * <ul>
-	 * 	<li>use {@link #getAccount()} to get {@link Account} object.
-	 * 	<li>update object with new data.
-	 * 	<li>hand update object as argument to this method.
+	 * <li>use {@link #getAccount()} to get {@link Account} object.
+	 * <li>update object with new data.
+	 * <li>hand update object as argument to this method.
 	 * </ul>
+	 * 
 	 * @param updated
 	 */
 
@@ -228,7 +244,8 @@ public class DatastoreService {
 	}
 
 	private void updateEntity(Entity entity) {
-		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
 		datastore.put(entity);
 	}
 
@@ -240,14 +257,16 @@ public class DatastoreService {
 		ret.setDate((Date) stockEntity.getProperty(DAY));
 		Long quantity = (Long) stockEntity.getProperty(STOCK_QUANTITY);
 		ret.setStockQuantity(quantity.intValue());
-		ret.setRecommendation(ALGO_RECOMMENDATION.valueOf((String) stockEntity.getProperty(RECOMMENDATION)));
+		ret.setRecommendation(ALGO_RECOMMENDATION.valueOf((String) stockEntity
+				.getProperty(RECOMMENDATION)));
 
 		return ret;
 	}
-	
+
 	private Entity stockToEntity(StockStatus stock) {
 		Key parent = KeyFactory.createKey("date", stock.getDate().getTime());
-		Key key = KeyFactory.createKey(parent, NAMESPACE_STOCK, stock.getSymbol());
+		Key key = KeyFactory.createKey(parent, NAMESPACE_STOCK,
+				stock.getSymbol());
 
 		Entity entity = new Entity(key);
 		entity.setProperty(SYMBOL, stock.getSymbol());
@@ -256,7 +275,7 @@ public class DatastoreService {
 		entity.setProperty(DAY, stock.getDate());
 		entity.setProperty(STOCK_QUANTITY, stock.getStockQuantity());
 		entity.setProperty(RECOMMENDATION, stock.getRecommendation().name());
-		
+
 		return entity;
 	}
 
@@ -270,18 +289,18 @@ public class DatastoreService {
 		for (int i = 0; i < stocks.length; i++) {
 
 			Stock stock = stocks[i];
-			if(stock != null)
+			if (stock != null)
 				symbols.add(stock.getSymbol());
 		}
 
-		entity.setProperty(SYMBOL_LIST, symbols);		
+		entity.setProperty(SYMBOL_LIST, symbols);
 		return entity;
 	}
-	
+
 	private void updateStocks(List<StockStatus> stockList) {
-		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		
-		
+		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+
 		for (StockStatus stockStatus : stockList) {
 			updateStock(stockStatus);
 		}
@@ -293,28 +312,34 @@ public class DatastoreService {
 
 		try {
 			datastore.put(store);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			log.log(Level.SEVERE, e.getMessage());
 		}
 	}
-	
+
 	private void updateStock(StockStatus stockStatus) {
 
-		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		com.google.appengine.api.datastore.DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
 
-		Filter fSymbol = new FilterPredicate(SYMBOL, FilterOperator.EQUAL, stockStatus.getSymbol());
+		Filter fSymbol = new FilterPredicate(SYMBOL, FilterOperator.EQUAL,
+				stockStatus.getSymbol());
 		final long oneDay = TimeUnit.DAYS.toMillis(1);
-		final long daysAgo = System.currentTimeMillis() - oneDay*30;
-		Filter fdays = new FilterPredicate(DAY, FilterOperator.GREATER_THAN_OR_EQUAL, daysAgo);
+		final long daysAgo = System.currentTimeMillis() - oneDay * 30;
+		Filter fdays = new FilterPredicate(DAY,
+				FilterOperator.GREATER_THAN_OR_EQUAL, daysAgo);
 
-		Query q = new Query(NAMESPACE_STOCK).setFilter(CompositeFilterOperator.and(fSymbol, fdays)).addSort(DAY, SortDirection.DESCENDING);
+		Query q = new Query(NAMESPACE_STOCK).setFilter(
+				CompositeFilterOperator.and(fSymbol, fdays)).addSort(DAY,
+				SortDirection.DESCENDING);
 
 		// Use PreparedQuery interface to retrieve results
 		PreparedQuery pq = datastore.prepare(q);
 
 		for (Entity entity : pq.asIterable()) {
 			entity.setProperty(STOCK_QUANTITY, stockStatus.getStockQuantity());
-			entity.setProperty(RECOMMENDATION, stockStatus.getRecommendation().name());
+			entity.setProperty(RECOMMENDATION, stockStatus.getRecommendation()
+					.name());
 			datastore.put(entity);
 			break;
 		}
