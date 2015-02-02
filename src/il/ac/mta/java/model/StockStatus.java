@@ -14,8 +14,8 @@ import il.ac.mta.java.model.StockStatus;
 
 public class StockStatus extends Stock {
 
-	private ALGO_RECOMMENDATION recommendation;
-	int stockQuantity;
+	public ALGO_RECOMMENDATION recommendation;
+	public int stockQuantity;
 
 	// constructor
 	public StockStatus(String symbol, float bid, float ask, Date date,
