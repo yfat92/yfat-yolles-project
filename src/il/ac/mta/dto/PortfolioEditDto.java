@@ -25,7 +25,6 @@ public class PortfolioEditDto {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 	public void setBalance(float balance) {
 		this.balance = balance;
 	}

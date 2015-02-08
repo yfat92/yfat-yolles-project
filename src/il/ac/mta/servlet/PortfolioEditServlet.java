@@ -11,6 +11,7 @@ import il.ac.mta.java.model.Portfolio;
 import il.ac.mta.java.model.StockStatus;
 import il.ac.mta.service.PortfolioService;
 import il.ac.mta.service.PortfolioService.OPERATION;
+import il.ac.mta.service.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,15 +26,14 @@ public class PortfolioEditServlet extends AbstractAlgoServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json");
 
 		Portfolio portfolio = portfolioService.getPortfolio();
 		StockStatus[] stockStatusArray = portfolio.getStocks();
 		List<StockStatus> stockStatusList = new ArrayList<>();
 		for (StockStatus ss : stockStatusArray) {
-			if (ss != null)
+			if(ss != null)
 				stockStatusList.add(ss);
 		}
 
@@ -41,23 +41,21 @@ public class PortfolioEditServlet extends AbstractAlgoServlet {
 		ret.setTitle(portfolio.getTitle());
 		ret.setBalance(portfolio.getBalance());
 		ret.setStockStatusList(stockStatusList);
-
 		resp.getWriter().print(withNullObjects().toJson(ret));
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.setContentType("application/json");
 
 		try {
 			String title = req.getParameter("title");
-			if (title != null && !title.isEmpty()) {
+			if(title != null && !title.isEmpty()) {
 				portfolioService.setTitle(title);
 			}
 
 			String balance = req.getParameter("balance");
-			if (balance != null && !balance.isEmpty()) {
+			if(balance != null && !balance.isEmpty()) {
 				portfolioService.setBalance(Float.valueOf(balance));
 			}
 
@@ -65,16 +63,15 @@ public class PortfolioEditServlet extends AbstractAlgoServlet {
 
 			String qStr = req.getParameter("quantityforaction");
 			int quantity;
-			if (qStr == null || qStr.isEmpty()) {
+			if(qStr == null || qStr.isEmpty()) {
 				quantity = -1;
-			} else {
-				quantity = Integer.valueOf(qStr);
+			}else {
+				quantity = Integer.valueOf(qStr);					
 			}
 
 			String operationStr = req.getParameter("operation");
 			if (operationStr != null) {
-				PortfolioService.OPERATION operation = OPERATION
-						.valueOf(operationStr.toUpperCase());
+				PortfolioService.OPERATION operation = OPERATION.valueOf(operationStr.toUpperCase());
 
 				switch (operation) {
 				case ADD:
@@ -98,14 +95,13 @@ public class PortfolioEditServlet extends AbstractAlgoServlet {
 				}
 			}
 			resp.sendRedirect("/portfolioedit.jsp");
-		} catch (StockNotExistsException e) {
+		}catch(StockNotExistsException e) {
 			resp.sendRedirect("/portfolioedit.jsp?error=Stock not exist in portfolio");
-		} catch (StockAlreadyExistsException e) {
+		}catch(StockAlreadyExistsException e) {
 			resp.sendRedirect("/portfolioedit.jsp?error=Stock already exists in portfolio");
-		} catch (PortfolioFullException | SymbolNotFoundInNasdaq
-				| IllegalQuantityException | BalanceException e) {
+		}catch(PortfolioFullException | SymbolNotFoundInNasdaq | IllegalQuantityException | BalanceException e) {
 			resp.sendRedirect("/portfolioedit.jsp?error=" + e.getMessage());
-		} catch (Exception e) {
+		}catch(Exception e) {
 			log.severe("Error: " + e.getMessage());
 			resp.sendRedirect("/portfolioedit.jsp?error=General error occured.");
 		}
